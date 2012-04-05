@@ -1,0 +1,24 @@
+# for eclipse
+/.project
+/.settings/
+/.buildpath
+
+# temporary
+/tmp/*
+
+# phpunit
+/phpunit.xml
+
+# phpdox
+/phpdox.xml
+
+# vendor
+/vendor
+
+# for jenkins
+/build/
+
+# for composer
+composer.lock
+composer.phar
+

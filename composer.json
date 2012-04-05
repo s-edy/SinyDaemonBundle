@@ -1,0 +1,25 @@
+{
+    "name": "edy/SinyDaemonBundle",
+    "description": "This is a daemonizing library in Symfony2 as a Bundle.",
+    "version": "0.0.1",
+    "type": "symfony-bundle",
+    "keywords": [ "daemon" ],
+    "homepage": "https://github.com/s-edy/SinyDaemonBundle",
+    "time": "2012-04-06",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "edy",
+            "email": "edy@siny.jp",
+            "homepage": "https://github.com/s-edy"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.8",
+        "monolog/monolog": "1.0.*"
+    },
+    "autoload": {
+        "psr-0": { "Siny\\DaemonBundle": "" }
+    },
+    "target-dir": "Siny/DaemonBundle"
+}
