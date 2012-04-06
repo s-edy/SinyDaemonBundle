@@ -3,6 +3,8 @@ Daemon Bundle
 
 This is a daemonization library to use in Symfony2 as a Bundle
 
+[![Build Status](https://secure.travis-ci.org/s-edy/SinyDaemonBundle.png)](http://travis-ci.org/s-edy/SinyDaemonBundle)
+
 Installation
 -------------
 
