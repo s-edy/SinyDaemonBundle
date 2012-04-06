@@ -31,6 +31,8 @@
 			<arg value="${basedir}/phpunit.xml.jenkins" />
 			<arg value="--log-junit" />
 			<arg value="${basedir}/build/logs/junit.xml" />
+			<arg value="--coverage-clover" />
+			<arg value="${basedir}/build/logs/clover.xml" />
 		</exec>
 	</target>
 	<target name="pdepend" description="Generate jdepend.xml and software metrics charts using PHP_Depend">
