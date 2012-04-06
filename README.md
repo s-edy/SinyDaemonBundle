@@ -16,13 +16,7 @@ Installation
     target=bundles/Siny/DaemonBundle
 ```
 
-### 2) Run venders scpript
-
-```
-$ php bin/venders install
-```
-
-### 3) Add the Siny namespace to your autoloader
+### 2) Add the Siny namespace to your autoloader
 
 ```php
 <?php
@@ -34,7 +28,7 @@ $loader->registerNamespaces(array(
 ));
 ```
 
-### 4) Add this bundle to your application's kernel
+### 3) Add this bundle to your application's kernel
 
 ```php
 <?php
