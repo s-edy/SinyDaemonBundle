@@ -8,6 +8,11 @@
 * file that was distributed with this source code.
 */
 
+$temporary = __DIR__ . '/../tmp';
+if (! file_exists($temporary)) {
+    mkdir($temporary);
+}
+
 $vendorDirectory = __DIR__ . '/../vendor';
 
 if (! file_exists($vendorDirectory . '/.composer/autoload.php')) {
