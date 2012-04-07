@@ -13,17 +13,16 @@ namespace Siny\DaemonBundle\Process;
 /**
  * This is an waitable interface.
  *
- * @package SinyDaemonBundle
- * @subpackage process
  * @author Shinichiro Yuki <edy@siny.jp>
  */
-interface Waitable
+interface WaitableInterface
 {
     /**
      * Wait
      *
-     * @param integer $pid - The PID to wait
-     * @param integer $option - 0, WNOHANG, WUNTRACED
+     * @param integer $pid    The PID to wait
+     * @param integer $option 0, WNOHANG, WUNTRACED
+     *
      * @return integer - the PID of the exited child process
      * @throws Siny\DaemonBundle\Process\Exception\WaitException
      */

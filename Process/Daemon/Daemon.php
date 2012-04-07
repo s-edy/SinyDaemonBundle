@@ -11,18 +11,16 @@
 namespace Siny\DaemonBundle\Process\Daemon;
 
 use Siny\DaemonBundle\Process\Process;
-use Siny\DaemonBundle\Process\Daemon\Daemonable;
-use Siny\DaemonBundle\Process\Daemon\Worker\Workable;
+use Siny\DaemonBundle\Process\Daemon\DaeWorkableInterface;
+use Siny\DaemonBundle\Process\Daemon\Worker\WorkableInterface;
 use Siny\DaemonBundle\Process\Daemon\Exception\DaemonException;
 
 /**
  * This is a daemon class
  *
- * @package SinyDaemonBundle
- * @subpackage daemon
  * @author Shinichiro Yuki <edy@siny.jp>
  */
-class Daemon extends Process implements Daemonable
+class Daemon extends Process implements DaemonizableInterface
 {
     /**
      * Default running directory
@@ -32,9 +30,9 @@ class Daemon extends Process implements Daemonable
     const DEFAULT_RUNNING_DIRECTORY = DIRECTORY_SEPARATOR;
 
     /**
-     * Workable class
+     * WorkableInterface class
      *
-     * @var Siny\DaemonBundle\Process\Daemon\Worker\Workable
+     * @var Siny\DaemonBundle\Process\Daemon\Worker\WorkableInterface
      */
     private $worker;
 
@@ -55,9 +53,9 @@ class Daemon extends Process implements Daemonable
     /**
      * Set Options when construction
      *
-     * @param Workable $worker
+     * @param WorkableInterface $worker
      */
-    public function __construct(Workable $worker)
+    public function __construct(WorkableInterface $worker)
     {
         $this->worker = $worker;
         foreach ($this->getWorker()->getRegistrationSignals() as $signal) {
@@ -71,7 +69,7 @@ class Daemon extends Process implements Daemonable
     /**
      * {@inheritdoc}
      *
-     * @see Siny\DaemonBundle\Process\Daemon.Daemonable::setRunningDirectory()
+     * @see Siny\DaemonBundle\Process\Daemon\DaemonizableInterface::setRunningDirectory()
      */
     public function setRunningDirectory(\SplFileInfo $dir)
     {
@@ -89,7 +87,7 @@ class Daemon extends Process implements Daemonable
     /**
      * Get worker
      *
-     * @return Siny\DaemonBundle\Process\Daemon\Worker\Workable
+     * @return Siny\DaemonBundle\Process\Daemon\Worker\WorkableInterface
      */
     public function getWorker()
     {
@@ -99,7 +97,7 @@ class Daemon extends Process implements Daemonable
     /**
      * {@inheritdoc}
      *
-     * @see Siny\DaemonBundle\Process\Daemon.Daemonable::getRunningDirectory()
+     * @see Siny\DaemonBundle\Process\Daemon\DaemonizableInterface::getRunningDirectory()
      */
     public function getRunningDirectory()
     {
@@ -109,7 +107,7 @@ class Daemon extends Process implements Daemonable
     /**
      * {@inheritdoc}
      *
-     * @see Siny\DaemonBundle\Process\Daemon.Daemonable::isDaemon()
+     * @see Siny\DaemonBundle\Process\Daemon\DaemonizableInterface::isDaemon()
      */
     public function isDaemon()
     {
@@ -119,7 +117,7 @@ class Daemon extends Process implements Daemonable
     /**
      * {@inheritdoc}
      *
-     * @see Siny\DaemonBundle\Process\Daemon.Daemonable::dispatchSignal()
+     * @see Siny\DaemonBundle\Process\Daemon\DaemonizableInterface::dispatchSignal()
      */
     public function dispatchSignal()
     {
@@ -129,7 +127,7 @@ class Daemon extends Process implements Daemonable
     /**
      * {@inheritdoc}
      *
-     * @see Siny\DaemonBundle\Process\Daemon.Daemonable::run()
+     * @see Siny\DaemonBundle\Process\Daemon\DaemonizableInterface::run()
      */
     public function start()
     {
@@ -144,7 +142,7 @@ class Daemon extends Process implements Daemonable
     /**
      * {@inheritdoc}
      *
-     * @see Siny\DaemonBundle\Process\Daemon.Daemonable::stop()
+     * @see Siny\DaemonBundle\Process\Daemon\DaemonizableInterface::stop()
      */
     public function stop()
     {
@@ -173,6 +171,7 @@ class Daemon extends Process implements Daemonable
             if ($this->isParentProcess()) {
                 $this->isParent = false;
                 $this->isChild = true;
+
                 return;
             }
             $this->isChild = false;

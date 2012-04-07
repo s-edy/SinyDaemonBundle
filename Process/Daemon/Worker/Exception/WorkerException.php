@@ -13,8 +13,6 @@ namespace Siny\DaemonBundle\Process\Daemon\Worker\Exception;
 /**
  * This is an exception class of worker
  *
- * @package SinyDaemonBundle
- * @subpackage worker
  * @author Shinichiro Yuki <edy@siny.jp>
  */
 class WorkerException extends \Exception

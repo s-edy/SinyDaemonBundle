@@ -15,8 +15,6 @@ use Siny\DaemonBundle\Process\Exception\ProcessException;
 /**
  * This is an exception class of wait
  *
- * @package SinyDaemonBundle
- * @subpackage process
  * @author Shinichiro Yuki <edy@siny.jp>
  */
 class WaitException extends ProcessException

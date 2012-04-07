@@ -39,7 +39,7 @@ class DaemonTest extends \PHPUnit_Framework_TestCase
         $this->flush();
         $this->set('exec', 0);
         $this->pid = posix_getpid();
-        $this->worker = $this->getMock("Siny\DaemonBundle\Process\Daemon\Worker\Workable");
+        $this->worker = $this->getMock("Siny\DaemonBundle\Process\Daemon\Worker\WorkableInterface");
         $this->worker->expects($this->any())->method("getRegistrationSignals")->will($this->returnValue(array(SIGHUP)));
         $this->worker->expects($this->any())->method("hasCallback")->will($this->returnValue(true));
         $this->worker->expects($this->any())->method("getCallback")->will($this->returnValue(SIG_DFL));
@@ -76,7 +76,7 @@ class DaemonTest extends \PHPUnit_Framework_TestCase
 
     public function testGetWorker()
     {
-        $this->assertInstanceOf('Siny\DaemonBundle\Process\Daemon\Worker\Workable', $this->daemon->getWorker(), "Not workable class instance.");
+        $this->assertInstanceOf('Siny\DaemonBundle\Process\Daemon\Worker\WorkableInterface', $this->daemon->getWorker(), "Not WorkableInterface");
     }
 
     /**

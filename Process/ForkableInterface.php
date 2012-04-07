@@ -13,11 +13,9 @@ namespace Siny\DaemonBundle\Process;
 /**
  * This is an forkable interface.
  *
- * @package SinyDaemonBundle
- * @subpackage process
  * @author Shinichiro Yuki <edy@siny.jp>
  */
-interface Forkable
+interface ForkableInterface
 {
     /**
      * Fork

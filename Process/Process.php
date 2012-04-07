@@ -18,8 +18,6 @@ use Siny\DaemonBundle\Process\Exception\ProcessException;
 /**
  * This is a process class
  *
- * @package SinyDaemonBundle
- * @subpackage process
  * @author Shinichiro Yuki <edy@siny.jp>
  */
 class Process implements ProcessInterface
@@ -69,6 +67,8 @@ class Process implements ProcessInterface
      * {@inheritdoc}
      *
      * @see Siny\DaemonBundle\Process.ProcessInterface::registerSignal()
+     *
+     * @throws Siny\DaemonBundle\Process\Exception\ProcessException
      */
     public function registerSignal($signal, $callback)
     {
@@ -113,7 +113,7 @@ class Process implements ProcessInterface
     /**
      * {@inheritdoc}
      *
-     * @see Siny\DaemonBundle\Process.Forkable::fork()
+     * @see Siny\DaemonBundle\Process\ForkableInterface::fork()
      */
     public function fork()
     {
@@ -131,7 +131,7 @@ class Process implements ProcessInterface
     /**
      * {@inheritdoc}
      *
-     * @see Siny\DaemonBundle\Process.Waitable::wait()
+     * @see Siny\DaemonBundle\Process\WaitableInterface::wait()
      */
     public function waitPID($pid = -1, $option = 0)
     {
@@ -139,13 +139,14 @@ class Process implements ProcessInterface
         if ($pid === -1) {
             throw new WaitException("Failed to wait.");
         }
+
         return $pid;
     }
 
     /**
      * Set SID
      *
-     * @return integer - session id
+     * @return integer session id
      * @throws \RuntimeException
      */
     public function setSid()
@@ -154,6 +155,7 @@ class Process implements ProcessInterface
         if ($sessionId === -1) {
             throw new ProcessException(sprintf("Failed to set SID. PID=[%s], Process Group ID=[%s]", posix_getpid(), posix_getpgrp()));
         }
+
         return $sessionId;
     }
 
@@ -161,6 +163,7 @@ class Process implements ProcessInterface
      * Change current directory
      *
      * @param SplFileInfo $directory
+     *
      * @throws \RuntimeException
      */
     public function chdir(\SplFileInfo $directory)
@@ -177,10 +180,11 @@ class Process implements ProcessInterface
     }
 
     /**
-     * Change umask
+     * Changes umask
      *
-     * @param integer $mask
-     * @return number - Old umask
+     * @param integer $expects Umask octal number
+     *
+     * @return number Old umask
      * @throws \RuntimeException
      */
     public function umask($expects = null)
@@ -189,13 +193,17 @@ class Process implements ProcessInterface
         if (! is_null($expects) && $before === $this->doUmask()) {
             throw new ProcessException(sprintf("Failed to change umask. expect=[%s], before=[%s]", $expects, $before));
         }
+
         return $before;
     }
 
     /**
-     * Fclose
+     * Closes an open file pointer
+     *
+     * This method is being just only wrapped fclose() fiunction.
      *
      * @param resource $descriptor
+     *
      * @throws \RuntimeException
      */
     public function fclose($descriptor)
@@ -208,7 +216,7 @@ class Process implements ProcessInterface
     /**
      * {@inheritdoc}
 	 *
-     * @see Siny\DaemonBundle\Process.Forkable::isForked()
+     * @see Siny\DaemonBundle\Process\ForkableInterface::isForked()
      */
     public function isForked()
     {
@@ -218,7 +226,7 @@ class Process implements ProcessInterface
     /**
      * {@inheritdoc}
 	 *
-     * @see Siny\DaemonBundle\Process.Forkable::isParentProcess()
+     * @see Siny\DaemonBundle\Process\ForkableInterface::isParentProcess()
      */
     public function isParentProcess()
     {
@@ -228,7 +236,7 @@ class Process implements ProcessInterface
     /**
      * {@inheritdoc}
 	 *
-     * @see Siny\DaemonBundle\Process.Forkable::isChildProcess()
+     * @see Siny\DaemonBundle\Process\ForkableInterface::isChildProcess()
      */
     public function isChildProcess()
     {
@@ -248,10 +256,11 @@ class Process implements ProcessInterface
     /**
      * Register signal handler
      *
-     * @see {@link http://www.php.net/manual/ja/function.pcntl-signal.php}
+     * @param integer $signal   The signal number
+     * @param mixed   $callback Callback function, or method.
      *
-     * @param integer $signal
-     * @param mixed $callback
+     * @return Returns TRUE on success or FALSE on failure.
+     * @see {@link http://www.php.net/manual/en/function.pcntl-signal.php}
      */
     protected function doSignal($signal, $callback)
     {
@@ -273,9 +282,11 @@ class Process implements ProcessInterface
     /**
      * Wait actually
      *
-     * @see {@link http://www.php.net/manual/ja/function.pcntl-wait.php}
+     * @param intger  $pid    The value of pid
+     * @param integer $option 0, WNOHANG, WUNTRACED
      *
-     * @param integer $option - 0, WNOHANG, WUNTRACED
+     * @return Same value as pcntl_waitpid returns value
+     * @see {@link http://www.php.net/manual/en/function.pcntl-wait.php}
      */
     protected function doWaitPID($pid = -1, $option = 0)
     {
@@ -285,7 +296,7 @@ class Process implements ProcessInterface
     /**
      * Set sid
      *
-     * @return integer - session id
+     * @return integer session id
      */
     protected function doSetSid()
     {
@@ -295,7 +306,8 @@ class Process implements ProcessInterface
     /**
      * Chdir
      *
-     * @param string $dir
+     * @param string $dir The new current directory
+     *
      * @return boolean
      */
     protected function doChdir($dir)
@@ -306,7 +318,8 @@ class Process implements ProcessInterface
     /**
      * umask
      *
-     * @param integer $expects
+     * @param integer $expects Umask octal number
+     *
      * @return integer
      */
     protected function doUmask($expects = null)
@@ -321,7 +334,8 @@ class Process implements ProcessInterface
     /**
      * fclose
      *
-     * @param resource $descroptor
+     * @param resource $descriptor Opend file pointer
+     *
      * @return boolean
      */
     protected function doFclose($descriptor)
@@ -332,7 +346,9 @@ class Process implements ProcessInterface
     /**
      * Normalize callback
      *
-     * @param mixed $callback - SIG_IGN | SIG_DFL, or callback function, or callback object array.
+     * @param mixed $callback SIG_IGN | SIG_DFL, or callback function, or callback object array.
+     *
+     * @return mixed Callback function or method.
      * @throws \InvalidArgumentException
      */
     private function normalizeCallback($callback)
@@ -343,6 +359,7 @@ class Process implements ProcessInterface
         if (! is_callable($callback, false)) {
             throw new \InvalidArgumentException("Callback variable wasn't callable.");
         }
+
         return $callback;
     }
 }

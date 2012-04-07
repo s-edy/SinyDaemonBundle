@@ -10,18 +10,16 @@
 
 namespace Siny\DaemonBundle\Process\Daemon\Worker;
 
-use Siny\DaemonBundle\Process\Daemon\Worker\Workable;
+use Siny\DaemonBundle\Process\Daemon\Worker\WorkableInterface;
 use Siny\DaemonBundle\Process\Daemon\Worker\Exception\WorkerException;
 use Monolog\Logger;
 
 /**
  * This is a daemon class
  *
- * @package SinyDaemonBundle
- * @subpackage daemon
  * @author Shinichiro Yuki <edy@siny.jp>
  */
-abstract class Worker implements Workable
+abstract class Worker implements WorkableInterface
 {
     /**
      * Logger
@@ -40,7 +38,7 @@ abstract class Worker implements Workable
     /**
      * {@inheritdoc}
      *
-     * @see Siny\DaemonBundle\Process\Daemon\Worker.Workable::setLogger()
+     * @see Siny\DaemonBundle\Process\Daemon\Worker\WorkableInterface::setLogger()
      */
     public function setLogger(Logger $logger)
     {
@@ -52,7 +50,7 @@ abstract class Worker implements Workable
     /**
      * {@inheritdoc}
      *
-     * @see Siny\DaemonBundle\Process\Daemon\Worker.Workable::getLogger()
+     * @see Siny\DaemonBundle\Process\Daemon\Worker\WorkableInterface::getLogger()
      */
     public function getLogger()
     {
@@ -62,7 +60,8 @@ abstract class Worker implements Workable
     /**
      * {@inhritdoc}
      *
-     * @see Siny\DaemonBundle\Process\Daemon\Worker.Workable::getRegistrationSignals()
+     * @return array(integer)
+     * @see Siny\DaemonBundle\Process\Daemon\Worker\WorkableInterface::getRegistrationSignals()
      */
     public function getRegistrationSignals()
     {
@@ -72,7 +71,7 @@ abstract class Worker implements Workable
     /**
      * {@inheritdoc}
      *
-     * @see Siny\DaemonBundle\Process\Daemon\Worker.Workable::getCallback()
+     * @see Siny\DaemonBundle\Process\Daemon\Worker\WorkableInterface::getCallback()
      */
     public function getCallback($signal)
     {
@@ -84,7 +83,7 @@ abstract class Worker implements Workable
     /**
      * {@inheritdoc}
      *
-     * @see Siny\DaemonBundle\Process\Daemon\Worker.Workable::hasCallback()
+     * @see Siny\DaemonBundle\Process\Daemon\Worker\WorkableInterface::hasCallback()
      */
     public function hasCallback($signal)
     {
@@ -94,8 +93,10 @@ abstract class Worker implements Workable
     /**
      * Set callback
      *
-     * @param integer $signal
-     * @param mixed $callback
+     * @param integer $signal   The number of signal
+     * @param mixed   $callback Callback function or method
+     *
+     * @return self
      */
     protected function setCallback($signal, $callback)
     {

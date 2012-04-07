@@ -13,19 +13,18 @@ namespace Siny\DaemonBundle\Process\Daemon;
 use Siny\DaemonBundle\Process\ProcessInterface;
 
 /**
- * This is an Daemonable interface
+ * This is an Daemonizable interface
  *
- * @package SinyDaemonBundle
- * @subpackage daemon
  * @author Shinichiro Yuki <edy@siny.jp>
  */
-interface Daemonable extends ProcessInterface
+interface DaemonizableInterface extends ProcessInterface
 {
     /**
      * Set running directory
      *
-     * @param SplFileInfo $dir
-     * @return Siny\DaemonBundle\Process\Daemon\Daemonable
+     * @param SplFileInfo $dir The new running directory
+     *
+     * @return Siny\DaemonBundle\Process\Daemon\DaemonizableInterface
      * @throws InvalidArgumentException
      */
     public function setRunningDirectory(\SplFileInfo $dir);

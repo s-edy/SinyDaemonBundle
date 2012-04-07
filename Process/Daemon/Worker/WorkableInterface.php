@@ -16,17 +16,16 @@ use Monolog\Logger;
 /**
  * This is an interface of worker.
  *
- * @package SinyDaemonBundle
- * @subpackage Worker
  * @author Shinichiro Yuki <edy@siny.jp>
  */
-interface Workable
+interface WorkableInterface
 {
     /**
      * Set logger
      *
      * @param Logger $logger
-     * @return Siny\DaemonBundle\Process\Daemon\Worker\Worker
+     *
+     * @return Siny\DaemonBundle\Process\Daemon\Worker\WorkerInterface
      */
     public function setLogger(Logger $logger);
 
@@ -54,6 +53,8 @@ interface Workable
     /**
      * Stop
      *
+     * @param integer $signal The number of signal
+     *
      * @throws Siny\DaemonBundle\Worker\Exception\WorkerException
      */
     public function stop($signal = null);
@@ -68,8 +69,10 @@ interface Workable
     /**
      * Get callback
      *
-     * @param integer $signal
-     * @return mixed - callback
+     * @param integer $signal The number of signal
+     *
+     * @return mixed Callback function or method
+     *
      * @throws Siny\DaemonBundle\Worker\Exception\WorkerException
      */
     public function getCallback($signal);
@@ -77,7 +80,8 @@ interface Workable
     /**
      * Has callback
      *
-     * @param integer $signal
+     * @param integer $signal The number of signal
+     *
      * @return boolean
      */
     public function hasCallback($signal);

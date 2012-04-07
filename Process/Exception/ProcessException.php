@@ -13,8 +13,6 @@ namespace Siny\DaemonBundle\Process\Exception;
 /**
  * This is an exception class of process
  *
- * @package SinyDaemonBundle
- * @subpackage process
  * @author Shinichiro Yuki <edy@siny.jp>
  */
 class ProcessException extends \Exception

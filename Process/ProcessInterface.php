@@ -10,29 +10,27 @@
 
 namespace Siny\DaemonBundle\Process;
 
-use Siny\DaemonBundle\Process\Forkable;
-use Siny\DaemonBundle\Process\Waitable;
+use Siny\DaemonBundle\Process\ForkableInterface;
+use Siny\DaemonBundle\Process\WaitableInterface;
 
 /**
  * This is an interface of process.
  *
- * @package SinyDaemonBundle
- * @subpackage process
  * @author Shinichiro Yuki <edy@siny.jp>
  */
-interface ProcessInterface extends Forkable, Waitable
+interface ProcessInterface extends ForkableInterface, WaitableInterface
 {
     /**
      * Register callback for handling signal
      *
-     * @param integer $signal - A signal type
-     * @param mixed $callback - Callback function name string or object method array.
-     * @throws Siny\DaemonBundle\Process\Exception\ProcessException
+     * @param integer $signal   A signal type
+     * @param mixed   $callback Callback function name string or object method array.
      */
     public function registerSignal($signal, $callback);
 
     /**
      * Get Registered signals
+     *
 	 * Get signals that was registered to handle
 
 	 * @return array
