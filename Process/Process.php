@@ -64,7 +64,10 @@ class Process implements ProcessInterface
     private $waitStatus;
 
     /**
-     * {@inheritdoc}
+     * Register callback for handling signal
+     *
+     * @param integer $signal   A signal type
+     * @param mixed   $callback Callback function name string or object method array.
      *
      * @see Siny\DaemonBundle\Process.ProcessInterface::registerSignal()
      *
@@ -89,7 +92,35 @@ class Process implements ProcessInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Get Registered signals
+     *
+	 * Get signals that was registered to handle
+	 *
+	 * @return array
+     *
+     * @see Siny\DaemonBundle\Process.ProcessInterface::getRegisteredSignals()
+     */
+    public function getRegisteredSignals()
+    {
+        return $this->handlingSignals;
+    }
+
+    /**
+     * Catchs signal ?
+     *
+     * @return boolean Whenter this process catched signal
+     *
+     * @see Siny\DaemonBundle\Process.ProcessInterface::catchesSignal()
+     */
+    public function catchesSignal()
+    {
+        return $this->caughtSignal > 0;
+    }
+
+    /**
+     * Handle signal
+     *
+     * @param integer $signal
      *
      * @see Siny\DaemonBundle\Process.ProcessInterface::handleSignal()
      */
@@ -101,18 +132,10 @@ class Process implements ProcessInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Fork
      *
-     * @see Siny\DaemonBundle\Process.ProcessInterface::getRegisteredSignals()
-     */
-    public function getRegisteredSignals()
-    {
-        return $this->handlingSignals;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
+     * @return integer the PID of the created child process
+     * @throws Siny\DaemonBundle\Process\Exception\ForkException
      * @see Siny\DaemonBundle\Process\ForkableInterface::fork()
      */
     public function fork()
@@ -129,8 +152,46 @@ class Process implements ProcessInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Is this process already forked ?
      *
+     * @return boolean Whether this process is already forked.
+     * @see Siny\DaemonBundle\Process\ForkableInterface::isForked()
+     */
+    public function isForked()
+    {
+        return $this->isForked;
+    }
+
+    /**
+     * Is this parent process ?
+     *
+     * @return boolean Whether this is parent process.
+     * @see Siny\DaemonBundle\Process\ForkableInterface::isParentProcess()
+     */
+    public function isParentProcess()
+    {
+        return $this->isParent;
+    }
+
+    /**
+     * Is this child process ?
+     *
+     * @return boolean Whether this is parent process.
+     * @see Siny\DaemonBundle\Process\ForkableInterface::isChildProcess()
+     */
+    public function isChildProcess()
+    {
+        return $this->isChild;
+    }
+
+    /**
+     * Wait
+     *
+     * @param integer $pid    The PID to wait
+     * @param integer $option 0, WNOHANG, WUNTRACED
+     *
+     * @return integer the PID of the exited child process
+     * @throws Siny\DaemonBundle\Process\Exception\WaitException
      * @see Siny\DaemonBundle\Process\WaitableInterface::wait()
      */
     public function waitPID($pid = -1, $option = 0)
@@ -211,46 +272,6 @@ class Process implements ProcessInterface
         if (! $this->doFclose($descriptor)) {
             throw new ProcessException(sprintf("Failed to close. descriptor=[%s]", var_export($descriptor, true)));
         }
-    }
-
-    /**
-     * {@inheritdoc}
-	 *
-     * @see Siny\DaemonBundle\Process\ForkableInterface::isForked()
-     */
-    public function isForked()
-    {
-        return $this->isForked;
-    }
-
-    /**
-     * {@inheritdoc}
-	 *
-     * @see Siny\DaemonBundle\Process\ForkableInterface::isParentProcess()
-     */
-    public function isParentProcess()
-    {
-        return $this->isParent;
-    }
-
-    /**
-     * {@inheritdoc}
-	 *
-     * @see Siny\DaemonBundle\Process\ForkableInterface::isChildProcess()
-     */
-    public function isChildProcess()
-    {
-        return $this->isChild;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @see Siny\DaemonBundle\Process.ProcessInterface::catchesSignal()
-     */
-    public function catchesSignal()
-    {
-        return $this->caughtSignal > 0;
     }
 
     /**

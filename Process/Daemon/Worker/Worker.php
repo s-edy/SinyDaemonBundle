@@ -36,8 +36,11 @@ abstract class Worker implements WorkableInterface
     private $callbacks = array();
 
     /**
-     * {@inheritdoc}
+     * Set logger
      *
+     * @param Logger $logger
+     *
+     * @return Siny\DaemonBundle\Process\Daemon\Worker\WorkerInterface
      * @see Siny\DaemonBundle\Process\Daemon\Worker\WorkableInterface::setLogger()
      */
     public function setLogger(Logger $logger)
@@ -48,8 +51,9 @@ abstract class Worker implements WorkableInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Get logger
      *
+     * @return Logger
      * @see Siny\DaemonBundle\Process\Daemon\Worker\WorkableInterface::getLogger()
      */
     public function getLogger()
@@ -58,8 +62,9 @@ abstract class Worker implements WorkableInterface
     }
 
     /**
-     * {@inhritdoc}
+     * Get registration Signals
      *
+     * @return array
      * @return array(integer)
      * @see Siny\DaemonBundle\Process\Daemon\Worker\WorkableInterface::getRegistrationSignals()
      */
@@ -69,8 +74,13 @@ abstract class Worker implements WorkableInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Get callback
      *
+     * @param integer $signal The number of signal
+     *
+     * @return mixed Callback function or method
+     *
+     * @throws Siny\DaemonBundle\Worker\Exception\WorkerException
      * @see Siny\DaemonBundle\Process\Daemon\Worker\WorkableInterface::getCallback()
      */
     public function getCallback($signal)
@@ -81,8 +91,11 @@ abstract class Worker implements WorkableInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Has callback
      *
+     * @param integer $signal The number of signal
+     *
+     * @return boolean
      * @see Siny\DaemonBundle\Process\Daemon\Worker\WorkableInterface::hasCallback()
      */
     public function hasCallback($signal)

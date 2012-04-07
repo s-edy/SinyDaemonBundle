@@ -32,7 +32,7 @@ interface ProcessInterface extends ForkableInterface, WaitableInterface
      * Get Registered signals
      *
 	 * Get signals that was registered to handle
-
+	 *
 	 * @return array
      */
     public function getRegisteredSignals();

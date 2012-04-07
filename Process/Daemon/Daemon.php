@@ -67,8 +67,12 @@ class Daemon extends Process implements DaemonizableInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Set running directory
      *
+     * @param SplFileInfo $dir The new running directory
+     *
+     * @return Siny\DaemonBundle\Process\Daemon\DaemonizableInterface
+     * @throws InvalidArgumentException
      * @see Siny\DaemonBundle\Process\Daemon\DaemonizableInterface::setRunningDirectory()
      */
     public function setRunningDirectory(\SplFileInfo $dir)
@@ -85,18 +89,9 @@ class Daemon extends Process implements DaemonizableInterface
     }
 
     /**
-     * Get worker
+     * Get running directory
      *
-     * @return Siny\DaemonBundle\Process\Daemon\Worker\WorkableInterface
-     */
-    public function getWorker()
-    {
-        return $this->worker;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
+     * @return SplFileInfo
      * @see Siny\DaemonBundle\Process\Daemon\DaemonizableInterface::getRunningDirectory()
      */
     public function getRunningDirectory()
@@ -105,8 +100,9 @@ class Daemon extends Process implements DaemonizableInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Is this daemon ?
      *
+     * @return boolean - Whether this process is daemon
      * @see Siny\DaemonBundle\Process\Daemon\DaemonizableInterface::isDaemon()
      */
     public function isDaemon()
@@ -115,8 +111,9 @@ class Daemon extends Process implements DaemonizableInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Dispatch signal
      *
+     * @return boolean
      * @see Siny\DaemonBundle\Process\Daemon\DaemonizableInterface::dispatchSignal()
      */
     public function dispatchSignal()
@@ -125,8 +122,9 @@ class Daemon extends Process implements DaemonizableInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Start daemon
      *
+     * @throws Siny\DaemonBundle\Process\Daemon\Exception\DaemonException
      * @see Siny\DaemonBundle\Process\Daemon\DaemonizableInterface::run()
      */
     public function start()
@@ -140,13 +138,24 @@ class Daemon extends Process implements DaemonizableInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Stop daemon
      *
+     * @throws Siny\DaemonBundle\Process\Daemon\Exception\DaemonException
      * @see Siny\DaemonBundle\Process\Daemon\DaemonizableInterface::stop()
      */
     public function stop()
     {
         $this->getWorker()->stop();
+    }
+
+    /**
+     * Get worker
+     *
+     * @return Siny\DaemonBundle\Process\Daemon\Worker\WorkableInterface
+     */
+    public function getWorker()
+    {
+        return $this->worker;
     }
 
     /**
